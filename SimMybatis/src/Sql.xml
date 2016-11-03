@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlinfo>
+<sql name="selectUser" ResultType="cn.lj.domain.User">
+   <sqlsentence>SELECT * FROM user WHERE id=? AND username=?</sqlsentence>
+   <property name="id" value="29" />
+   <property name="username" value="诸葛亮" /> 
+</sql>
+  <sql name="deleteUser">
+      <sqlsentence>DELETE FROM user WHERE id=?</sqlsentence>
+      <property name="id" value="56"></property>
+  </sql>
+    <sql name="selectUserByName" ResultType="cn.lj.domain.User">
+      <sqlsentence>SELECT * FROM user WHERE username=?</sqlsentence>
+      <property name="username" value="Apache"></property>
+  </sql>
+  
+  <sql name="insertUser">
+  <sqlsentence>INSERT INTO user VALUES(?,?,?,?,?)</sqlsentence>
+  <property name="username" value="java"></property>
+  </sql>
+</sqlinfo>

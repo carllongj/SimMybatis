@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import cn.lj.config.LoadConfig;
 import cn.lj.config.XmlLoadConfig;
@@ -17,7 +16,11 @@ public class OperateSqlConn implements OperateSql{
 	private ResultSet rs = null;
 	private XmlLoadSql ls = null;
 
-	//传入为一个名称,那么将这个名称解析为一个sqlconfig配置文件的名称进行加载
+	/**
+	 * 传入为一个名称,那么将这个名称解析为一个sqlconfig配置文件的名称进行加载
+	 * @param configName
+	 * @param sqlName
+	 */
 	public OperateSqlConn(String configName,String sqlName){
 		this(new XmlLoadConfig(configName),sqlName);
 	}
@@ -32,27 +35,29 @@ public class OperateSqlConn implements OperateSql{
 		ls = new XmlLoadSql(sqlStenceName); //加载sql语句并进行初始化
 	}
 	
-	//查询一个对象的实例,并且实例只能是一个
-	public Object selectOne(String sqlName){
+	/**
+	 * 查询一个对象的实例,并且实例只能是一个
+	 */
+	public Object selectOne(String sqlName,Object obj){
 		SqlBean sqlBean = ls.getMap().get(sqlName);
-		   handleResult(sqlName);
+		   handleResult(sqlName,obj);
 		   try {
 			rs = pstmt.executeQuery();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-			Object obj = null;
+			Object instance = null;
 			if(rs != null){
 				ReflectClass rc = new ReflectClass(sqlBean.getClassName());
-				obj = rc.newInstance(rs);
+				instance = rc.newInstance(rs);
 			}
-			return obj;
+			return instance;
 	}
 	
 
 	@Override
-	public void delete(String sqlName) {
-		handleResult(sqlName);
+	public void delete(String sqlName,Object obj) {
+		handleResult(sqlName,obj);
 		try {
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -60,29 +65,25 @@ public class OperateSqlConn implements OperateSql{
 		}
 	}
 
-	@Override
-	public void add(String sqlName) {
-		 
-	}
-
-//	public List<Object> selectList(String sqlName){
+	//	public List<Object> selectList(String sqlName){
 //		
 //	}
  
 	/**
-	 * 处理查询语句,并且进行查询,将结果集进行返回
+	 * 处理查询语句,设置参数,只支持一个基本的数据类型和String
 	 * @param sqlName
 	 * @return
 	 */
-	private void handleResult(String sqlName){
+	private void handleResult(String sqlName,Object obj){
 		try {
 			SqlBean sqlBean = ls.getMap().get(sqlName);
 			pstmt = conn.prepareStatement(sqlBean.getSql());
-			Map<String,String> map = sqlBean.getMap();
+			/*Map<String,String> map = sqlBean.getMap();
 			List<String> list = StringSplit(sqlBean.getSql());
 			for(int i = 0;i < list.size();i++){
 				pstmt.setString(i + 1 , map.get(list.get(i)));
-			}
+			}*/
+			pstmt.setObject(1, obj);
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
@@ -103,6 +104,11 @@ public class OperateSqlConn implements OperateSql{
 			list.add(str2[0]);
 		}
 		return list;
+	}
+
+	@Override
+	public void add(String sqlName, Object obj) {
+		
 	}
 
 }

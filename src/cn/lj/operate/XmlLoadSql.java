@@ -78,13 +78,13 @@ public class XmlLoadSql {
 	}
 	
 	//将这个sqlbean进行装填,将这个sql语句对应的属性全部装填
-	@SuppressWarnings("rawtypes")
+	//@SuppressWarnings("rawtypes")
 	private void fullMap(Element ele,SqlBean sqlBean){
 		sqlBean.setSql(ele.elementText("sqlsentence"));
 		if(ele.attributeValue("ResultType") != null){
 			sqlBean.setClassName(ele.attributeValue("ResultType"));
 		}
-		Map<String,String> map = sqlBean.getMap();
+		/*Map<String,String> map = sqlBean.getMap();
 		Iterator it = ele.elementIterator();
 		while(it.hasNext()){
 			Element elem = (Element)it.next();
@@ -93,6 +93,6 @@ public class XmlLoadSql {
 			if(name != null ){
 				map.put(name, value);
 			}
-		}
+		}*/
 	}
 }

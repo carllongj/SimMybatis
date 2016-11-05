@@ -14,7 +14,7 @@ public class Test {
 //		System.out.println(user);
 //		
 		Long time = new Date().getTime();
-		User user = (User)os.selectOne("selectUserByName");
+		User user = (User)os.selectOne("selectUserByName","诸葛亮");
 		System.out.println(user);
 		Long time1 = new Date().getTime();
 		System.out.println(time1-time);

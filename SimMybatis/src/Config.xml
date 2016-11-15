@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<config>
-     <driver>com.mysql.jdbc.Driver</driver>
-     <sqlname>jdbc:mysql://localhost:3306/mybatis</sqlname>
-     <username>root</username>
-     <password>123</password>
-</config>
